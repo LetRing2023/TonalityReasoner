@@ -1,5 +1,6 @@
 #include "MusicalNote.h"
 #include <map>
+#include <memory>
 
 namespace TONALITY_REASONER
 {
@@ -70,6 +71,15 @@ namespace TONALITY_REASONER
         else return MusicalInterval::ERR;
     }
 
+    MusicalInterval MusicalNote::getInterval(const MusicalSignature& Sig1, const MusicalSignature& Sig2)
+    {
+        MusicalAlphabet sig1 = MusicalAlphabet(int(Sig1));
+        MusicalAlphabet sig2 = MusicalAlphabet(int(Sig2));
+        if(sig1 > sig2)
+            sig2 = MusicalAlphabet(int(sig2) + 12);
+        return getInterval(MusicalNote(sig1),MusicalNote(sig2));
+    }
+
     MusicalNote MusicalNote::getNote(const MusicalNote& note, const MusicalInterval& interval, bool sharpOrFlat)
     {
         if(interval==MusicalInterval::ERR)
@@ -79,6 +89,21 @@ namespace TONALITY_REASONER
             destination += int(interval);
         else destination -= int(interval);
         return MusicalNote(MusicalAlphabet(destination));
+    }
+
+    MusicalSignature MusicalNote::getNote(const MusicalSignature& sig, const MusicalInterval& interval, bool sharpOrFlat)
+    {
+        if(interval==MusicalInterval::ERR)
+            return sig;
+        int destination = int(sig);
+        if(sharpOrFlat)
+            destination += int(interval);
+        else destination -= int(interval);
+        while(destination<0)
+            destination += 12;
+        if(destination>11)
+            destination %= 12;
+        return MusicalSignature(destination);
     }
 
     MusicalSignature MusicalNote::getSignature()const
