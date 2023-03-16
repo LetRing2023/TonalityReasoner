@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Check if BUILD directory exists
+if [ -d "BUILD" ]; then
+    # If BUILD directory exists, delete it and all its contents
+    rm -r BUILD
+fi
