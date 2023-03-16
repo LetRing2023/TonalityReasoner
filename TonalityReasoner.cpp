@@ -34,17 +34,23 @@ namespace TONALITY_REASONER
         bool finish = false;
 
         std::vector<std::pair<const MusicalSignature, int>*> sortedData;
-        for(auto it : lr_data)
-            sortedData.push_back(&it);
+        for (auto it : lr_data)
+        {
+            std::pair<const MusicalSignature, int>* tmp = &it;
+            sortedData.push_back(tmp);
+        }
         sort(sortedData.begin(), sortedData.end(),
             [](std::pair<const MusicalSignature, int>* x, std::pair<const MusicalSignature, int>* y) -> bool
             {
                 return x->second > y->second;
             }
         );
+        if (sortedData.size() < 7)
+            return finish;
         std::vector<MusicalSignature> topSeven;
-        for(int i = 0; i < 7; i++)
-            topSeven.push_back(sortedData[i]->first);
+        for (int i = 0; i < 7; i++)
+            if (sortedData[i]->second)
+                topSeven.push_back(sortedData[i]->first);
         
         MusicalSignature root;
         bool tonality = true;
@@ -112,6 +118,7 @@ namespace TONALITY_REASONER
         lr_root = MusicalNote::toString(root);
         lr_tonality = tonality;
 
+        finish = true;
         return finish;
     }
 
