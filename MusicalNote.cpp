@@ -1,6 +1,6 @@
 #include "MusicalNote.h"
 #include <map>
-#include <memory>
+#include <vector>
 
 namespace TONALITY_REASONER
 {
@@ -60,6 +60,37 @@ namespace TONALITY_REASONER
         {21, MusicalInterval::MajorThirteenth}, {22, MusicalInterval::MinorFourteenth}, {23, MusicalInterval::MajorFourteenth},
         {24, MusicalInterval::DoubleOctave}
     };
+
+    std::string MusicalNote::toString(const MusicalAlphabet& note)
+    {
+        std::vector<std::string> ret;
+        for(auto i : stringToAlphabet)
+        {
+            if(i.second==note)
+                ret.push_back(i.first);
+        }
+        if(ret.size()==1)
+            return ret[0];
+        else return ret[0] + "/" + ret[1];
+    }
+
+    std::string MusicalNote::toString(const MusicalSignature& note)
+    {
+        std::vector<std::string> ret;
+        for(auto i : stringToAlphabet)
+        {
+            if(i.second==MusicalAlphabet(note))
+                ret.push_back(i.first.substr(0, i.first.length() - 1));
+        }
+        if(ret.size()==1)
+            return ret[0];
+        else return ret[0] + "/" + ret[1];
+    }
+
+    std::string MusicalNote::toString(const MusicalNote& note)
+    {
+        return toString(note.lr_note);
+    }
 
     MusicalInterval MusicalNote::getInterval(const MusicalNote& Note1, const MusicalNote& Note2)
     {

@@ -46,6 +46,9 @@ namespace TONALITY_REASONER
         MusicalNote(MusicalAlphabet noteAlphabet);
         ~MusicalNote() {};
 
+        static std::string toString(const MusicalAlphabet& note);
+        static std::string toString(const MusicalSignature& note);
+        static std::string toString(const MusicalNote& note);
         static MusicalInterval getInterval(const MusicalNote& Note1, const MusicalNote& Note2);
         static MusicalInterval getInterval(const MusicalSignature& Sig1, const MusicalSignature& Sig2);// consider that Sig1 < Sig2
         static MusicalNote getNote(const MusicalNote& note, const MusicalInterval& interval, bool sharpOrFlat);

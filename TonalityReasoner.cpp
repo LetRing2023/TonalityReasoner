@@ -71,15 +71,46 @@ namespace TONALITY_REASONER
                     }
                     else break;
                 }
-                tRatio = cRight / cInterval;// calculate ratio
+                tRatio = cRight / cInterval;//calculate ratio
                 if(tRatio > ratio)
                 {
                     ratio = tRatio;//update ratio
                     tonality = true;//Major
+                    tmpInterval = MusicalInterval::PerfectUnison;
+                    for(int j = 0; j < position; j++)
+                        tmpInterval = MusicalInterval(int(tmpInterval) + int(Major[j]));
+                    root = MusicalNote::getNote(currentSig, tmpInterval, false);//calculate root
+                }
 
+                //Calculate Minor
+                int cMinor = Minor.size();
+                tRatio = 0, cRight = 0;
+                tmpInterval = Minor[position];
+                for(int j = (position + 1) % 7, iteration = cMinor - position, tPosition = position + 1;
+                    iteration;
+                    j = (j + 1) % 7, iteration--, tPosition++)
+                {
+                    if(MusicalNote::getInterval(currentSig, topSeven[j]) == tmpInterval)
+                    {
+                        cRight++;//counting
+                        tmpInterval = MusicalInterval(int(tmpInterval) + int(Minor[tPosition]));//update interval
+                    }
+                    else break;
+                }
+                tRatio = cRight / cInterval;//calculate ratio
+                if(tRatio > ratio)
+                {
+                    ratio = tRatio;
+                    tonality = false;
+                    tmpInterval = MusicalInterval::PerfectUnison;
+                    for(int j = 0; j < position; j++)
+                        tmpInterval = MusicalInterval(int(tmpInterval) + int(Minor[j]));
+                    root = MusicalNote::getNote(currentSig, tmpInterval, false);//calculate root
                 }
             }
         }
+        lr_root = MusicalNote::toString(root);
+        lr_tonality = tonality;
 
         return finish;
     }
@@ -89,5 +120,14 @@ namespace TONALITY_REASONER
         lr_data.clear();
         lr_root = "";
         lr_tonality = true;
+    }
+
+    std::string TonalityReasoner::output()
+    {
+        std::string ret = "Root: " + lr_root + "\nTonality: ";
+        if(lr_tonality)
+            ret += "Major\n";
+        else ret += "Minor\n";
+        return ret;
     }
 }

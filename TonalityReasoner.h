@@ -15,6 +15,7 @@ namespace TONALITY_REASONER
         void add(const MusicalNote& note, bool ifUpdate);
         bool update();
         void clear();
+        std::string output();
     private:
         std::map<MusicalSignature, int> lr_data;
         std::string lr_root;
