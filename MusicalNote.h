@@ -1,24 +1,37 @@
 #include <string>
 
+#ifndef LR_MUSICALNOTE_H
+#define LR_MUSICALNOTE_H
 namespace TONALITY_REASONER
 {
+    enum class MusicalSignature
+    {
+        C = 3, CsDb = 4, 
+        D = 5, DsEb = 6, 
+        E = 7, 
+        F = 8, FsGb = 9, 
+        G = 10, GsAb = 11, 
+        A = 0, AsBb = 1, 
+        B = 2
+    };
+
     enum class MusicalAlphabet
     {
-        A0 = 0, As0, Bb0, B0,
-        C1, Cs1, Db1, D1, Ds1, Eb1, E1, F1, Fs1, Gb1, G1, Gs1, Ab1, A1, As1, Bb1, B1,
-        C2, Cs2, Db2, D2, Ds2, Eb2, E2, F2, Fs2, Gb2, G2, Gs2, Ab2, A2, As2, Bb2, B2,
-        C3, Cs3, Db3, D3, Ds3, Eb3, E3, F3, Fs3, Gb3, G3, Gs3, Ab3, A3, As3, Bb3, B3,
-        C4, Cs4, Db4, D4, Ds4, Eb4, E4, F4, Fs4, Gb4, G4, Gs4, Ab4, A4, As4, Bb4, B4,
-        C5, Cs5, Db5, D5, Ds5, Eb5, E5, F5, Fs5, Gb5, G5, Gs5, Ab5, A5, As5, Bb5, B5,
-        C6, Cs6, Db6, D6, Ds6, Eb6, E6, F6, Fs6, Gb6, G6, Gs6, Ab6, A6, As6, Bb6, B6,
-        C7, Cs7, Db7, D7, Ds7, Eb7, E7, F7, Fs7, Gb7, G7, Gs7, Ab7, A7, As7, Bb7, B7,
+        A0 = 0, AsBb0, B0,
+        C1, CsDb1, D1, DsEb1, E1, F1, FsGb1, G1, GsAb1, A1, AsBb1, B1,
+        C2, CsDb2, D2, DsEb2, E2, F2, FsGb2, G2, GsAb2, A2, AsBb2, B2,
+        C3, CsDb3, D3, DsEb3, E3, F3, FsGb3, G3, GsAb3, A3, AsBb3, B3,
+        C4, CsDb4, D4, DsEb4, E4, F4, FsGb4, G4, GsAb4, A4, AsBb4, B4,
+        C5, CsDb5, D5, DsEb5, E5, F5, FsGb5, G5, GsAb5, A5, AsBb5, B5,
+        C6, CsDb6, D6, DsEb6, E6, F6, FsGb6, G6, GsAb6, A6, AsBb6, B6,
+        C7, CsDb7, D7, DsEb7, E7, F7, FsGb7, G7, GsAb7, A7, AsBb7, B7,
         C8
     };
 
     enum class MusicalInterval
     {
-        ERR,
-        PerfectUnison, MinorSecond, MajorSecond, MinorThird, MajorThird,
+        ERR = -1,
+        PerfectUnison = 0, MinorSecond, MajorSecond, MinorThird, MajorThird,
         PerfectFourth, Tritone, PerfectFifth, MinorSixth, MajorSixth,
         MinorSeventh, MajorSeventh, PerfectOctave, MinorNinth, MajorNinth,
         MinorTenth, MajorTenth, PerfectEleventh, AugmentedEleventh, PerfectTwelfth,
@@ -34,6 +47,9 @@ namespace TONALITY_REASONER
         ~MusicalNote();
 
         static MusicalInterval getInterval(const MusicalNote& Note1, const MusicalNote& Note2);
+        static MusicalNote getNote(const MusicalNote& note, const MusicalInterval& interval, bool sharpOrFlat);
+        
+        MusicalSignature getSignature()const;
 
         bool operator< (const MusicalNote& note)const;
         void operator= (const std::string noteStr);
@@ -42,3 +58,4 @@ namespace TONALITY_REASONER
         MusicalAlphabet lr_note;
     };
 }
+#endif
