@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Use C++ 11
 set(CMAKE_CXX_STANDARD 11)
 
+# Add Debug info
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+
 # Add source files
 set(SOURCES
     MusicalNote.h

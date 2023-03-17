@@ -11,4 +11,4 @@ cd BUILD
 
 # Run cmake and make
 cmake ..
-make
+make CXXFLAGS="-g"
