@@ -1,14 +1,10 @@
 #!/bin/bash
+# Configure script
 
-# Check if BUILD directory exists
 if [ ! -d "BUILD" ]; then
-    # If BUILD directory does not exist, create it
-    mkdir BUILD
+  mkdir BUILD
 fi
 
-# Change into BUILD directory
 cd BUILD
-
-# Run cmake and make
-cmake ..
-make CXXFLAGS="-g"
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make
