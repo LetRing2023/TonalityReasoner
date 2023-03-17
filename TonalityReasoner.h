@@ -12,7 +12,7 @@ namespace TONALITY_REASONER
         TonalityReasoner();
         ~TonalityReasoner() {}
 
-        void add(const MusicalNote& note, bool ifUpdate);
+        bool add(const MusicalNote& note, bool ifUpdate);
         bool update();
         void clear();
         std::string output();

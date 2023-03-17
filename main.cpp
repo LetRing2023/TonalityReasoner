@@ -15,8 +15,9 @@ int main()
             return 0;
         else 
         {
-            reasoner.add(MusicalNote(opt), true);
-            cout<<reasoner.output();
+            if(reasoner.add(MusicalNote(opt), true))
+                cout<<reasoner.output();
+            else cout<<"Need more note."<<endl;
         }
     }
     return 0;

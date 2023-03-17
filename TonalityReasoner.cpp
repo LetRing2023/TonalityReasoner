@@ -22,36 +22,39 @@ namespace TONALITY_REASONER
         lr_tonality = true;
     }
 
-    void TonalityReasoner::add(const MusicalNote& note, bool ifUpdate)
+    bool TonalityReasoner::add(const MusicalNote& note, bool ifUpdate)
     {
         lr_data[note.getSignature()]++;
         if(ifUpdate)
-            update();
+            return update();
+        else return false;
     }
 
     bool TonalityReasoner::update()
     {
         bool finish = false;
 
-        std::vector<std::pair<const MusicalSignature, int>*> sortedData;
+        std::vector<std::pair<MusicalSignature, int>> sortedData;
         for (auto it : lr_data)
         {
-            std::pair<const MusicalSignature, int>* tmp = &it;
-            sortedData.push_back(tmp);
+            std::pair<MusicalSignature, int> item = it;
+            sortedData.push_back(item);
         }
         sort(sortedData.begin(), sortedData.end(),
-            [](std::pair<const MusicalSignature, int>* x, std::pair<const MusicalSignature, int>* y) -> bool
+            [](const std::pair<const MusicalSignature, int>& x, 
+                const std::pair<const MusicalSignature, int>& y) -> bool
             {
-                return x->second > y->second;
+                return x.second > y.second;
             }
         );
         if (sortedData.size() < 7)
             return finish;
         std::vector<MusicalSignature> topSeven;
         for (int i = 0; i < 7; i++)
-            if (sortedData[i]->second)
-                topSeven.push_back(sortedData[i]->first);
-        
+            if (sortedData[i].second)
+                topSeven.push_back(sortedData[i].first);
+        sort(topSeven.begin(), topSeven.end());
+
         MusicalSignature root;
         bool tonality = true;
         double ratio = 0;
@@ -66,7 +69,7 @@ namespace TONALITY_REASONER
                 int cMajor = Major.size();
                 double tRatio = 0, cRight = 0;
                 tmpInterval = Major[position];
-                for(int j = (position + 1) % 7, iteartion = cMajor - position, tPosition = position + 1;
+                for(int j = (i + 1) % 7, iteartion = cMajor - position, tPosition = position + 1;
                     iteartion;
                     j = (j + 1) % 7, iteartion--, tPosition++)
                 {
@@ -92,7 +95,7 @@ namespace TONALITY_REASONER
                 int cMinor = Minor.size();
                 tRatio = 0, cRight = 0;
                 tmpInterval = Minor[position];
-                for(int j = (position + 1) % 7, iteration = cMinor - position, tPosition = position + 1;
+                for(int j = (i + 1) % 7, iteration = cMinor - position, tPosition = position + 1;
                     iteration;
                     j = (j + 1) % 7, iteration--, tPosition++)
                 {
@@ -131,7 +134,7 @@ namespace TONALITY_REASONER
 
     std::string TonalityReasoner::output()
     {
-        std::string ret = "Root: " + lr_root + "\nTonality: ";
+        std::string ret = lr_root + " ";
         if(lr_tonality)
             ret += "Major\n";
         else ret += "Minor\n";

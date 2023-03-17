@@ -108,7 +108,7 @@ namespace TONALITY_REASONER
         MusicalAlphabet sig2 = MusicalAlphabet(int(Sig2));
         if(sig1 > sig2)
             sig2 = MusicalAlphabet(int(sig2) + 12);
-        return getInterval(MusicalNote(sig1),MusicalNote(sig2));
+        return getInterval(MusicalNote(sig1), MusicalNote(sig2));
     }
 
     MusicalNote MusicalNote::getNote(const MusicalNote& note, const MusicalInterval& interval, bool sharpOrFlat)
